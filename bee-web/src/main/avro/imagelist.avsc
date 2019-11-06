@@ -1,0 +1,22 @@
+{"namespace": "com.leatop.bee.web.po",
+	"name": "ImageListAvro",
+	"type": "record",
+	"fields": [
+		{"name": "listNo", "type": "int"},
+		{"name": "serialNo", "type": ["string", "null"], "default": "null"},
+		{"name": "flagNetRoadID", "type": "int"},
+		{"name": "flagRoadID", "type": "int"},
+		{"name": "flagID", "type": "int"},
+		{"name": "deviceID", "type": "int"},
+		{"name": "laneNo", "type": "int"},
+		{"name": "directionNo", "type": "int"},
+		{"name": "vehPlate", "type": ["string", "null"], "default": "null"},
+		{"name": "vehColor", "type": ["string", "null"], "default": "null"},
+		{"name": "vehSpeed", "type": "int"},
+		{"name": "vehBodyColorNo", "type": "int"},
+		{"name": "vehBodyDeepNo", "type": "int"},
+		{"name": "vehTypeNo", "type": "int"},
+		{"name": "plateTypeNo", "type": "int"},
+		{"name": "image","type": ["string", "null"], "default": "null"}
+	]
+}

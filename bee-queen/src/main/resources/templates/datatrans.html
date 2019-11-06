@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>layui在线调试</title>
+  <link rel="stylesheet" href="/resource/lib/layui/css/layui.css" media="all">
+  <style>
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+  </style>
+  <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/resource/js/countUp.js"></script>
+  <link rel="stylesheet" href="/resource/css/font.css">
+        <link rel="stylesheet" href="/resource/css/xadmin.css">
+        <script src="/resource/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/resource/js/xadmin.js"></script>
+</head>
+<body>
+ <div style="width:100%;margin:0 auto;text-align:center;padding-top:20px;font-size:14px;">接口
+ 	<div style="display:inline;position: relative;height:50px;"><p id="BigUpdataValue" style="display:inline;position: absolute;left:40%;top:-20px;font-size:15px;"></p><img src="/resource/images/title.png" width="50%" height="10px"></img></div>kafka
+ 	<!-- <div style="display:inline;position: relative;height:50px;"><p style="display:inline;position: absolute;left:40%;top:-20px;">已入库222条</p><img src="/resource/images/title.png" width="300px" height="10px"></img></div>数据库 -->
+ 	<!-- <button type="button" onclick="open_history_list();" class="layui-btn layui-btn-normal" style="margin-left:20px;">查看历史</button> -->
+ </div>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+ <input type="hidden" th:value="${topicName}" id="topicName">
+<script src="/resource/lib/layui/layui.js"></script>
+<script>
+function open_history_list(){
+	xadmin.open('接口历史查看','/datatrans/list.html?topicName='+$("#topicName").val(),1000,350)
+}
+layui.config({
+  version: '1554901098009' //为了更新 js 缓存，可忽略
+});
+ 
+layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function(){
+  var laypage = layui.laypage //分页
+  ,table = layui.table //表格
+  //执行一个 table 实例
+  table.render({
+    elem: '#demo'
+    ,url: '/datatrans/load_list?page=1&limit=3&type=0&topicName='+$("#topicName").val() //数据接口
+    ,title: '用户表'
+    , height: 180
+    ,page: false //开启分页
+    ,cols: [[ //表头
+       {field: 'topicName', title: '主题名称', width:160}
+      ,{field: 'hostName', title: '主机名', width:160}
+      ,{field: 'startTime', title: '开始时间', width:170}
+      ,{field: 'endTime', title: '结束时间', width:170}
+      ,{field: 'transCount', title: '传输条数', width: 90, sort: true}
+      ,{field: 'successCount', title: '成功数', width:90, sort: true}
+      ,{field: 'errorCount', title: '失败数', width: 90, sort: true}
+      //,{field: 'sourceIp', title: '源IP', width:120} 
+      //,{field: 'targetIp', title: '目标IP', width: 120}
+    ]],
+    done: function(res, curr, count){
+        //如果是异步请求数据方式，res即为你接口返回的信息。
+        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+        //console.log(res);
+        var allsuccessCount=0;
+        for (var item of res.data) {
+        	//console.log(item.successCount);
+        	allsuccessCount = allsuccessCount+ item.successCount;
+        }
+        //console.log("获得总数："+allsuccessCount);
+        $("#BigUpdataValue").html("传输"+allsuccessCount+"条");
+        //得到当前页码
+        //console.log(curr); 
+        
+        //得到数据总量
+        //console.log(count);
+      }
+  });
+  //分页
+  laypage.render({
+    elem: 'pageDemo' //分页容器的id
+    ,count: 100 //总页数
+    ,skin: '#1E9FFF' //自定义选中色值
+    //,skip: true //开启跳页
+    ,jump: function(obj, first){
+      if(!first){
+        layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+      }
+    }
+  });
+  setInterval("location.reload();",3000);
+});
+/*var options = {
+        useEasing: true, 	    // 使用缓和
+        useGrouping: true,      // 使用分组(是否显示千位分隔符,一般为 true)
+        separator: ',',         // 分隔器(千位分隔符,默认为',')
+        decimal: '.',         // 十进制(小数点符号,默认为 '.')
+        prefix: '',	            // 字首(数字的前缀,根据需要可设为 $,¥,￥ 等)
+        suffix: '条'              // 后缀(数字的后缀 ,根据需要可设为 元,个,美元 等)
+    };
+	new CountUp('BigUpdataValue', 0, 10000, 0, 10, options).start();//$('#BigUpdataValue').countUp();*/
+//target = 目标元素的 ID；
+//startVal = 开始值；
+//endVal = 结束值；
+//decimals = 小数位数，默认值是0；
+//duration = 动画延迟秒数，默认值是2；
+//options  即为上一步声明的
+/*window.onload = function () {
+            //延迟5秒开始执行
+            longPolling();
+        }
+         function longPolling() {
+            $.ajax({
+                url: "/datatrans/readForCache?topicName="+$("#topicName").val(),
+                data: { },
+                type: "get",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data && data.statusCode==0) {
+                    	$('#BigUpdataValue').html("已传输"+data.phase+"条");
+                        setTimeout(longPolling, 3000);
+ 
+                    } else {
+                    	$('#BigUpdataValue').html("接口异常");
+                    }
+                }
+            });
+        };*/
+</script>
+</body>
+</html>        
+        

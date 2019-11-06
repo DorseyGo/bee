@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>layui在线调试</title>
+  <link rel="stylesheet" href="/resource/lib/layui/css/layui.css" media="all">
+  <style type="text/css">
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+    .container{
+      width: 80%;
+      margin: 0 auto;
+      height: 20px;
+    }
+    .progressBar {
+      display: inline-block;
+      width: 70%;
+      height: 10px;
+      background-color: rgba(0,0,0,0.4);
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      margin-right: 3%;
+    }
+    #progressFill {
+      width: 0%;
+      height: 10px;
+      position: relative;
+      border-radius: 3px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      background-size: 3em 3em;
+      -webkit-animation: warning-animation 750ms infinite linear;
+      -moz-animation: warning-animation 750ms infinite linear;
+      animation: warning-animation 750ms infinite linear;
+    }
+    #progressFill:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      border-radius: 3px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      background-image: linear-gradient(to bottom, #40A4C2, rgbA(37, 117, 188, 0.8) 15%, transparent 60%, #40A4C2);
+  }
+  @-moz-keyframes warning-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 3em 0;
+    }
+  }
+  @-webkit-keyframes warning-animation {
+      0% {
+          background-position: 0 0;
+      }
+      100% {
+          background-position: 3em 0;
+      }
+  }
+  @-ms-keyframes warning-animation {
+      0% {
+          background-position: 0 0;
+      }
+      100% {
+          background-position: 3em 0;
+      }
+  }
+  @-o-keyframes warning-animation {
+      0% {
+          background-position: 0 0;
+      }
+      100% {
+          background-position: 3em 0;
+      }
+  }
+  @keyframes warning-animation {
+      0% {
+          background-position: 0 0;
+      }
+      100% {
+          background-position: 3em 0;
+      }
+  }
+  .progressText{
+    display: inline-block;
+    margin-top: -5px;
+    vertical-align: middle;
+  }
+  #percentage {
+    vertical-align: middle;
+    color:red;
+    text-align:center;
+  }
+  </style>     
+  <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/resource/js/countUp.js"></script>
+</head>
+<body>
+ <!--<div style="width:100%;margin:0 auto;text-align:center;padding-top:20px;font-size:14px;">源
+ 	<div style="display:inline;position: relative;height:50px;"><p style="display:inline;position: absolute;left:40%;top:-20px;">已传输324条</p><img src="/resource/images/title.png" width="300px" height="10px"></img></div>kafka
+ 	<div style="display:inline;position: relative;height:50px;"><p style="display:inline;position: absolute;left:40%;top:-20px;">已入库222条</p><img src="/resource/images/title.png" width="300px" height="10px"></img></div>数据库
+ </div>  -->
+ <!-- <div class="container">
+    <span class = "progressBar">
+      <div id = "progressFill"></div>
+    </span>
+    <span class = "progressText"> 状态：<span id="connectStatus"></span>  </span>
+ </div> -->
+<div class="layui-collapse" id="errmsg" lay-filter="test" style="display:none;">
+  <div class="layui-colla-item">
+    <h2 class="layui-colla-title" style="color:red;">查看异常信息</h2>
+    <div class="layui-colla-content">
+      <p id="percentage"></p>
+    </div>
+  </div>
+</div>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+ <input type="hidden" th:value="${connectName}" id="connectName">
+<script src="/resource/lib/layui/layui.js"></script>
+<script>
+    $("#progressFill").animate({ 
+      width: "100%"
+    }, 0);
+layui.config({
+  version: '1554901098009' //为了更新 js 缓存，可忽略
+});
+ 
+layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function(){
+  var laypage = layui.laypage //分页
+  ,table = layui.table //表格
+  
+  //执行一个 table 实例
+  table.render({
+    elem: '#demo'
+    ,url: '/datatrans/load_list_connect?connectName='+$("#connectName").val() //数据接口
+    ,title: '用户表'
+    , height: 400
+    ,page: true //开启分页
+    ,cols: [[ //表头
+       {field: 'connectName', title: '任务名称', width:200}
+      ,{field: 'startTime', title: '开始时间', width:200}
+      ,{field: 'endTime', title: '结束时间', width:200}
+      //,{field: 'transCount', title: '传输条数', width: 200, sort: true, totalRow: true}
+      ,{field: 'successCount', title: '入库数', width:200, sort: true}
+      //,{field: 'errorCount', title: '入库失败数', width: 200, sort: true, totalRow: true}
+      //,{field: 'sourceIp', title: '源IP', width:120} 
+      //,{field: 'targetIp', title: '目标IP', width: 120}
+    ]]
+  });
+
+  //分页
+  laypage.render({
+    elem: 'pageDemo' //分页容器的id
+    ,count: 100 //总页数
+    ,skin: '#1E9FFF' //自定义选中色值
+    //,skip: true //开启跳页
+    ,jump: function(obj, first){
+      if(!first){
+        layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+      }
+    }
+  });
+  
+});
+/*var options = {
+        useEasing: true, 	    // 使用缓和
+        useGrouping: true,      // 使用分组(是否显示千位分隔符,一般为 true)
+        separator: ',',         // 分隔器(千位分隔符,默认为',')
+        decimal: '.',         // 十进制(小数点符号,默认为 '.')
+        prefix: '',	            // 字首(数字的前缀,根据需要可设为 $,¥,￥ 等)
+        suffix: '条'              // 后缀(数字的后缀 ,根据需要可设为 元,个,美元 等)
+    };
+	new CountUp('BigUpdataValue', 0, 10000, 0, 10, options).start();//$('#BigUpdataValue').countUp();*/
+//target = 目标元素的 ID；
+//startVal = 开始值；
+//endVal = 结束值；
+//decimals = 小数位数，默认值是0；
+//duration = 动画延迟秒数，默认值是2；
+//options  即为上一步声明的
+window.onload = function () {
+            //延迟5秒开始执行
+            longPolling();
+        }
+         function longPolling() {
+            $.ajax({
+                url: "/datawrite/getConnectorsStatus?name="+$("#connectName").val(),
+                data: { },
+                type: "get",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data && data.statusCode==0) {
+                    	$('#connectStatus').html("正常");
+                        //setTimeout(longPolling, 3000);
+                        $('#progressFill').css({"background-color":"#34e41c","background-image":"linear-gradient(-45deg, transparent 0em, transparent 0.8em, #1adc22 0.9em, #19e416 2.1em, transparent 2.1em, transparent 2.9em, #40f334 3.1em)"});
+                    } else {
+                    	$('#connectStatus').html("异常");//data.phase+
+                    	$('#progressFill').css({"background-color":"red","background-image":"none"});
+                    	$('#percentage').html("提示："+data.phase);
+                    	$('#errmsg').show();
+                    	//layer.alert("请至少选择一个任务");
+                    }
+                }
+            });
+        };
+        
+</script>
+</body>
+</html>        
+        

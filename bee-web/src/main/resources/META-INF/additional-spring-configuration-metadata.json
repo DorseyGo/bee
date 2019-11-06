@@ -1,0 +1,101 @@
+{
+  "properties": [
+    {
+      "name": "bee.data.supervisor.pre-processors",
+      "type": "java.lang.String",
+      "description": "pre-processors for data weave-in."
+    },
+    {
+      "name": "bee.data.supervisor.post-processors",
+      "type": "java.lang.String",
+      "description": "post-processors for data weave-out."
+    },
+    {
+      "name": "bee.data.weave.kafka.producer.acks",
+      "type": "java.lang.String",
+      "description": "acknowledgement for kafka producer."
+    },
+    {
+      "name": "bee.data.weave.kafka.producer.compression-type",
+      "type": "java.lang.String",
+      "description": "compression type."
+    },
+    {
+      "name": "bee.web.flag-toll-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.flag-toll-list-topic'"
+    },
+    {
+      "name": "bee.web.flag-car-pass-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.flag-car-pass-list-topic'"
+    },
+    {
+      "name": "bee.web.flag-cpc-pass-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.flag-cpc-pass-list-topic'"
+    },
+    {
+      "name": "bee.web.flag-etc-pass-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.flag-etc-pass-list-topic'"
+    },
+    {
+      "name": "bee.web.flag-run-status-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.flag-run-status-topic'"
+    },
+    {
+      "name": "bee.web.error-storage-path",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.error-storage-path'"
+    },
+    {
+      "name": "bee.web.etc-pass-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.etc-pass-list-topic'"
+    },
+    {
+      "name": "bee.web.reporter.url",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.reporter.url'"
+    },
+    {
+      "name": "spring.kafka.connectors.connector-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.kafka.connectors.connector-url'"
+    },
+    {
+      "name": "bee.web.image-etc-pass-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.image-etc-pass-list-topic'"
+    },
+    {
+      "name": "bee.web.image-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.image-list-topic'"
+    },
+    {
+      "name": "bee.web.image-image-list-topic",
+      "type": "java.lang.String",
+      "description": "A description for 'bee.web.image-image-list-topic'"
+    }
+  ],
+  "hints": [{
+    "name": "bee.data.weave.kafka.producer.acks",
+    "values": [
+      {
+        "value": "0",
+        "description": "no acknowledgement."
+      },
+      {
+        "value": "1",
+        "description": "when leader receives the data, then ack returned."
+      },
+      {
+        "value": "-1",
+        "description": "when all sync, then return."
+      }
+    ]
+  }]
+}

@@ -1,0 +1,3 @@
+com.leatop.bee.data.weaver.connector.jdbc.conn.dialect.MySQLDialect$Supplier
+com.leatop.bee.data.weaver.connector.jdbc.conn.dialect.OracleDialect$Supplier
+com.leatop.bee.data.weaver.connector.jdbc.conn.dialect.SQLServerDialect$Supplier
